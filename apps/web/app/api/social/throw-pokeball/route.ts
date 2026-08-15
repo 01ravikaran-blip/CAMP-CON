@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Run calculations inside transaction to ensure atomic updates
-    return await prisma.$transaction(async (tx) => {
+    return await prisma.$transaction(async (tx: any) => {
       const requester = await tx.user.findUnique({ where: { id: userId } });
       const targetUser = await tx.user.findUnique({ where: { id: targetUserId } });
       const existingRequest = await tx.connectionRequest.findFirst({

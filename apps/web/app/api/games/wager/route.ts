@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
 
     const isPoints = currency === 'POINTS';
 
-    const result = await prisma.$transaction(async (tx) => {
+    const result = await prisma.$transaction(async (tx: any) => {
       const user = await tx.user.findUnique({ where: { id: userId } });
       if (!user) throw new Error('User not found');
 

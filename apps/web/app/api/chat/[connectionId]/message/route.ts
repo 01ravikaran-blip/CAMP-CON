@@ -19,7 +19,7 @@ export async function POST(
       return NextResponse.json({ error: 'Message content required' }, { status: 400 });
     }
 
-    return await prisma.$transaction(async (tx) => {
+    return await prisma.$transaction(async (tx: any) => {
       const connection = await tx.connectionRequest.findUnique({
         where: { id: connectionId }
       });

@@ -14,7 +14,7 @@ export async function POST(
 
     const { id, action } = await params;
     
-    return await prisma.$transaction(async (tx) => {
+    return await prisma.$transaction(async (tx: any) => {
       const connection = await tx.connectionRequest.findUnique({
         where: { id }
       });
