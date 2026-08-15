@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import VerifiedGate from './VerifiedGate';
 
 export default function PokeballModal({ 
   isOpen, 
@@ -114,23 +115,25 @@ export default function PokeballModal({
               <p className="text-[10px] text-gray-500 mt-1">First message of the month is FREE. Extra pitches cost 15 ⚡</p>
             </div>
 
-            <button
-              onClick={handleThrow}
-              disabled={throwing || costData?.requesterEnergy < costData?.finalCost}
-              className="w-full py-3 bg-red-600 hover:bg-red-500 active:bg-red-700 rounded-xl text-white font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group"
-            >
-              {throwing ? (
-                <motion.div 
-                  animate={{ x: [0, 100, 200] }} 
-                  transition={{ repeat: Infinity, duration: 1 }}
-                  className="absolute inset-0 flex items-center justify-center text-2xl"
-                >
-                  🔴
-                </motion.div>
-              ) : (
-                "Throw Pokéball"
-              )}
-            </button>
+            <VerifiedGate actionLabel="Throwing a Pokéball">
+              <button
+                onClick={handleThrow}
+                disabled={throwing || costData?.requesterEnergy < costData?.finalCost}
+                className="w-full py-3 bg-red-600 hover:bg-red-500 active:bg-red-700 rounded-xl text-white font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group"
+              >
+                {throwing ? (
+                  <motion.div 
+                    animate={{ x: [0, 100, 200] }} 
+                    transition={{ repeat: Infinity, duration: 1 }}
+                    className="absolute inset-0 flex items-center justify-center text-2xl"
+                  >
+                    🔴
+                  </motion.div>
+                ) : (
+                  "Throw Pokéball"
+                )}
+              </button>
+            </VerifiedGate>
           </div>
         )}
       </motion.div>

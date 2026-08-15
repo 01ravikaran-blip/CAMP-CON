@@ -3,10 +3,12 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useTheme } from '../context/ThemeContext';
+import { useUser } from '@clerk/nextjs';
 
 export default function Home() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const { isSignedIn } = useUser();
 
   useEffect(() => {
     setMounted(true);
@@ -47,13 +49,15 @@ export default function Home() {
             ))}
           </div>
 
-          <Link
-            href="/login"
-            className="px-6 py-2.5 rounded-full bg-[var(--text-primary)] text-[var(--bg-primary)] hover:opacity-90 transition-all font-bold text-sm shadow-xl active:scale-95"
-            id="login-button-desktop"
-          >
-            Login
-          </Link>
+          {!isSignedIn && (
+            <Link
+              href="/login"
+              className="px-6 py-2.5 rounded-full bg-[var(--text-primary)] text-[var(--bg-primary)] hover:opacity-90 transition-all font-bold text-sm shadow-xl active:scale-95"
+              id="login-button-desktop"
+            >
+              Login
+            </Link>
+          )}
         </div>
       </nav>
 
@@ -74,19 +78,30 @@ export default function Home() {
 
         {/* Primary CTA */}
         <div className="flex flex-col sm:flex-row gap-4 animate-enter w-full sm:w-auto" style={{ animationDelay: '0.3s' }}>
-          <Link
-            href="/verify"
-            className="px-10 py-5 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold text-lg shadow-[0_10px_30px_rgba(37,99,235,0.4)] hover:scale-[1.03] active:scale-95 transition-all text-center"
-          >
-            Get Verified & Join 🚀
-          </Link>
-          <Link
-            href="/login"
-            className="px-10 py-5 rounded-2xl glass border border-white/10 font-bold text-lg hover:bg-white/5 active:scale-95 transition-all text-center md:hidden"
-            id="login-button-mobile"
-          >
-            Login Access 🔑
-          </Link>
+          {!isSignedIn ? (
+            <>
+              <Link
+                href="/verify"
+                className="px-10 py-5 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold text-lg shadow-[0_10px_30px_rgba(37,99,235,0.4)] hover:scale-[1.03] active:scale-95 transition-all text-center"
+              >
+                Get Verified & Join 🚀
+              </Link>
+              <Link
+                href="/login"
+                className="px-10 py-5 rounded-2xl glass border border-white/10 font-bold text-lg hover:bg-white/5 active:scale-95 transition-all text-center md:hidden"
+                id="login-button-mobile"
+              >
+                Login Access 🔑
+              </Link>
+            </>
+          ) : (
+            <Link
+              href="/map"
+              className="px-10 py-5 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold text-lg shadow-[0_10px_30px_rgba(16,185,129,0.4)] hover:scale-[1.03] active:scale-95 transition-all text-center w-full sm:w-auto"
+            >
+              Enter Campus 🗺️
+            </Link>
+          )}
         </div>
 
         {/* Feature Highlights */}

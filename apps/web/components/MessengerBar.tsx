@@ -38,7 +38,7 @@ export default function MessengerBar() {
     }, [isOpen]);
 
     return (
-        <div className={`fixed bottom-24 right-6 z-[100] transition-all duration-300 ${isOpen ? 'w-80 h-[500px]' : 'w-16 h-16'}`}>
+        <div className={`fixed right-5 bottom-24 z-40 transition-all duration-300 ${isOpen ? 'w-80 h-[500px]' : 'w-14 h-14'}`}>
             {isOpen ? (
                 <div className="w-full h-full glass-premium rounded-[32px] shadow-2xl border border-white/20 flex flex-col overflow-hidden animate-enter">
                     <div className="p-4 border-b border-white/10 flex justify-between items-center bg-white/5">
@@ -88,7 +88,7 @@ export default function MessengerBar() {
             ) : (
                 <button
                     onClick={() => setIsOpen(true)}
-                    className="w-16 h-16 rounded-[22px] bg-gradient-to-br from-blue-600 to-indigo-700 text-white shadow-2xl border-2 border-white/20 flex items-center justify-center hover:scale-110 active:scale-95 transition-all group relative"
+                    className="w-full h-full rounded-full bg-blue-600 shadow-xl hover:bg-blue-500 transition-all group relative flex items-center justify-center"
                 >
                     <span className="text-2xl group-hover:rotate-12 transition-transform">💬</span>
                     {chats.some(c => c.unread) && (

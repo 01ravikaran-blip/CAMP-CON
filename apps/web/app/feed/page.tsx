@@ -8,9 +8,8 @@ import { getPlaceName } from '../../utils/geocoding';
 import GlobalSearch from '../../components/GlobalSearch';
 import PostCard from '../../components/PostCard';
 import { useToast } from '../../components/Toast';
-
-import { useUser } from '@clerk/nextjs';
-
+import { useUser, UserButton } from '@clerk/nextjs';
+import EnergyBar from '../../components/EnergyBar';
 export default function FeedPage() {
     const { theme, setTheme } = useTheme();
     const { showToast } = useToast();
@@ -105,7 +104,39 @@ export default function FeedPage() {
                 setPosts(data);
             }
         } catch (error) {
-            console.error("Failed to fetch feed");
+            console.log("Social service offline. Loading mock feed...");
+            setPosts([
+                {
+                    _id: 'mock1',
+                    username: 'Sarah (Design)',
+                    content: 'Just finished my final project! Anyone want to grab coffee at the campus cafe? ☕️✨',
+                    media: [],
+                    created_at: new Date(Date.now() - 1000 * 60 * 30).toISOString(),
+                    upvotes: ['1', '2', '3', '4', '5'],
+                    downvotes: [],
+                    comments: [{ username: 'Alex', text: 'I am down! See you in 10.' }],
+                    shares: 2,
+                    views: 120,
+                    is_anonymous: false,
+                    location: { name: 'Campus Cafe' },
+                    tags: 'social'
+                },
+                {
+                    _id: 'mock2',
+                    username: 'Anonymous',
+                    content: 'Did anyone else find that OS midterm ridiculously hard? 😭',
+                    media: [],
+                    created_at: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
+                    upvotes: Array(45).fill('a'),
+                    downvotes: [],
+                    comments: [{ username: 'Anonymous', text: 'I guessed on half of them.' }],
+                    shares: 5,
+                    views: 400,
+                    is_anonymous: true,
+                    location: { name: 'Library' },
+                    tags: 'academics'
+                }
+            ]);
         }
     };
 
@@ -453,7 +484,19 @@ export default function FeedPage() {
                 setUnreadCount(data.filter(n => !n.is_read).length);
             }
         } catch (e) {
-            console.error("Failed to fetch notifications");
+            console.log("Social service offline. Loading mock notifications...");
+            const mockNotifs = [
+                {
+                    _id: 'mock_n1',
+                    actor: 'System',
+                    message: 'Welcome to the CAMP-CON Feed!',
+                    type: 'system',
+                    timestamp: new Date().toISOString(),
+                    is_read: false
+                }
+            ];
+            setNotifications(mockNotifs);
+            setUnreadCount(1);
         }
     };
 
@@ -605,41 +648,44 @@ export default function FeedPage() {
             {/* Header */}
             <div className="sticky top-0 z-50 glass border-b border-white/10 p-2 flex flex-col gap-2 backdrop-blur-xl">
                 <div className="flex justify-between items-center px-2">
-                    <div className="flex items-center gap-3">
-                        <h1 className="text-xl font-black tracking-tighter bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent cursor-pointer" onClick={simulateNotification}>
+                    <div className="flex items-center gap-3 min-w-0">
+                        <UserButton />
+                        <h1 className="font-semibold text-white truncate text-base sm:text-lg cursor-pointer" onClick={simulateNotification}>
                             {clerkUser?.publicMetadata?.university ? `${(clerkUser.publicMetadata.university as string).split(' ')[0]} Portal` : 'CAMP-CON'}
                         </h1>
                         <button
                             onClick={() => setTheme(theme === 'dark' ? 'light' : theme === 'light' ? 'reading' : 'dark')}
-                            className="w-10 h-10 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all btn-premium shadow-sm"
+                            className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all shrink-0"
                             title="Switch Theme"
                         >
-                            <span className="text-lg">{theme === 'dark' ? '🌙' : theme === 'light' ? '☀️' : '📖'}</span>
+                            <span className="text-sm">{theme === 'dark' ? '🌙' : theme === 'light' ? '☀️' : '📖'}</span>
                         </button>
                     </div>
-                    <div className="flex gap-2 items-center">
-                        {canGoLive() && (
-                            <button onClick={handleGoLive} className="bg-red-500/10 text-red-500 border border-red-500/50 px-3 py-1 rounded-full text-xs font-bold animate-pulse flex items-center gap-1 hover:bg-red-500/20 transition-colors">
-                                <span>🔴</span> Go Live
-                            </button>
-                        )}
+                    <div className="flex items-center gap-3">
+                        <div className="hidden sm:flex items-center">
+                            {canGoLive() && (
+                                <button onClick={handleGoLive} className="bg-red-500/10 text-red-500 border border-red-500/50 px-3 py-1 rounded-full text-xs font-bold animate-pulse flex items-center gap-1 hover:bg-red-500/20 transition-colors">
+                                    <span>🔴</span> Go Live
+                                </button>
+                            )}
+                        </div>
 
                         {/* Notifications Bell */}
                         <div className="relative">
                             <button
                                 onClick={() => setShowNotifications(!showNotifications)}
-                                className="w-10 h-10 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all btn-premium shadow-sm"
+                                className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all"
                                 title="Notifications"
                             >
-                                <span className="text-lg">🔔</span>
+                                <span className="text-sm">🔔</span>
                             </button>
                             {unreadCount > 0 && (
-                                <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-[10px] flex items-center justify-center font-bold">
+                                <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-[10px] font-bold text-white flex items-center justify-center">
                                     {unreadCount}
                                 </span>
                             )}
 
-                            {/* Dropdown */}
+                            {/* Notifications Dropdown */}
                             {showNotifications && (
                                 <div className="absolute right-0 top-10 w-80 bg-[var(--bg-secondary)] border border-white/10 rounded-xl shadow-2xl overflow-hidden z-50 animate-in fade-in slide-in-from-top-2">
                                     <div className="p-3 border-b border-white/5 font-bold text-sm flex justify-between">
@@ -668,6 +714,8 @@ export default function FeedPage() {
                                 </div>
                             )}
                         </div>
+                        
+                        <EnergyBar />
 
                         <button
                             onClick={() => showToast('This is a prototype and real usage will blow your mind! 💰', 'info')}
@@ -710,9 +758,10 @@ export default function FeedPage() {
                         className={`p-4 border-b border-white/10 transition-all duration-500 ease-in-out group/compose ${isInputActive || showTools || newPost.content.length > 0 ? 'bg-white/[0.02]' : 'hover:bg-white/[0.01]'}`}
                         onFocus={() => setIsInputActive(true)}
                         onBlur={(e) => {
+                            const currentTarget = e.currentTarget;
                             // Use a small timeout to allow relatedTarget to populate or state to update
                             setTimeout(() => {
-                                if (!document.activeElement || !e.currentTarget.contains(document.activeElement) && !newPost.content && newPost.media.length === 0) {
+                                if (!document.activeElement || !currentTarget.contains(document.activeElement) && !newPost.content && newPost.media.length === 0) {
                                     setIsInputActive(false);
                                     setShowTools(false);
                                 }

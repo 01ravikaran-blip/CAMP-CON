@@ -12,13 +12,13 @@ export const metadata: Metadata = {
 
 import {
   ClerkProvider,
-  SignedIn,
-  SignedOut,
+  Show,
   SignInButton,
   SignUpButton,
   UserButton,
 } from '@clerk/nextjs';
 import { ThemeProvider } from '../context/ThemeContext';
+import { TenantProvider } from '../context/TenantContext';
 
 import WakeUpServices from '../components/WakeUpServices';
 import TopProgressBar from '../components/TopProgressBar';
@@ -28,6 +28,7 @@ import { Suspense } from 'react';
 import MessengerBar from '../components/MessengerBar';
 import EnergyBar from '../components/EnergyBar';
 import ComputeNodeProvider from '../components/ComputeNodeProvider';
+import DevHUD from '../components/DevHUD';
 
 export default function RootLayout({
   children,
@@ -35,28 +36,29 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
-      <html lang="en" suppressHydrationWarning>
-        <body className="antialiased min-h-screen pb-16 md:pb-0">
+    <html lang="en" suppressHydrationWarning>
+      <body className="antialiased min-h-screen pb-16 md:pb-0">
+        <ClerkProvider telemetry={false}>
           <ThemeProvider>
-            <WakeUpServices />
-            <ComputeNodeProvider />
-            <Suspense fallback={null}>
-              <TopProgressBar />
-            </Suspense>
-            <ToastProvider>
-              <div className="fixed top-4 right-4 z-50">
-                <EnergyBar />
-              </div>
-              <PageTransition>
-                {children}
-              </PageTransition>
-              <MessengerBar />
-              <BottomNav />
-            </ToastProvider>
+            <TenantProvider>
+              <WakeUpServices />
+              <ComputeNodeProvider />
+              <Suspense fallback={null}>
+                <TopProgressBar />
+              </Suspense>
+              <ToastProvider>
+
+                <PageTransition>
+                  {children}
+                </PageTransition>
+                <MessengerBar />
+                <BottomNav />
+                <DevHUD />
+              </ToastProvider>
+            </TenantProvider>
           </ThemeProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+        </ClerkProvider>
+      </body>
+    </html>
   );
 }

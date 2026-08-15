@@ -292,7 +292,7 @@ export default function MapClient({ posts }: { posts: any[] }) {
                     pitch: 50,
                     bearing: -20
                 }}
-                mapStyle={theme === 'dark' ? 'https://tiles.openfreemap.org/styles/dark-matter' : 'https://tiles.openfreemap.org/styles/liberty'}
+                mapStyle={theme === 'dark' ? 'https://tiles.openfreemap.org/styles/dark' : 'https://tiles.openfreemap.org/styles/liberty'}
                 interactiveLayerIds={['students-layer']}
                 onClick={handleMapClick}
                 style={{ 

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import osmtogeojson from 'osmtogeojson';
+import { CAMPUS_REGISTRY } from '../../../../config/campuses';
 
 // In-memory cache to prevent Overpass rate limiting
 // Key: lat-lng-radius, Value: { timestamp, geojson }
@@ -8,7 +9,16 @@ const CACHE_TTL = 1000 * 60 * 60 * 24; // 24 hours
 
 export async function POST(req: NextRequest) {
   try {
-    const { latitude, longitude, radius = 1200 } = await req.json();
+    let { latitude, longitude, radius = 1200 } = await req.json();
+
+    const tenantId = req.headers.get('x-tenant-id');
+    const campus = CAMPUS_REGISTRY.find(c => c.id === tenantId);
+
+    if (campus && campus.id !== 'campus-global') {
+      latitude = campus.coordinates.latitude;
+      longitude = campus.coordinates.longitude;
+      radius = campus.radiusMeters;
+    }
 
     if (!latitude || !longitude) {
       return NextResponse.json({ error: 'Missing coordinates' }, { status: 400 });

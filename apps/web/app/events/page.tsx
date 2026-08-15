@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useUser } from '@clerk/nextjs';
 import { Camera, MapPin, Zap } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import VerifiedGate from '../../components/VerifiedGate';
 
 export default function EventsPage() {
     const { user: clerkUser, isLoaded } = useUser();
@@ -120,16 +121,18 @@ export default function EventsPage() {
                                 <span>👥 {event.attendees?.length || 0} Going</span>
                             </div>
 
-                            <button
-                                onClick={() => {
-                                    setSelectedEventId(event.id);
-                                    setShowScanner(true);
-                                }}
-                                className="w-full py-3 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 rounded-xl font-bold transition-colors flex items-center justify-center gap-2 text-sm shadow-lg shadow-blue-900/20"
-                            >
-                                <Camera size={18} />
-                                Scan QR to Check-in
-                            </button>
+                            <VerifiedGate actionLabel="Checking into an event">
+                                <button
+                                    onClick={() => {
+                                        setSelectedEventId(event.id);
+                                        setShowScanner(true);
+                                    }}
+                                    className="w-full py-3 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 rounded-xl font-bold transition-colors flex items-center justify-center gap-2 text-sm shadow-lg shadow-blue-900/20"
+                                >
+                                    <Camera size={18} />
+                                    Scan QR to Check-in
+                                </button>
+                            </VerifiedGate>
                         </div>
                     ))}
                 </div>

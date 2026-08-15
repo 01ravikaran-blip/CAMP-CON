@@ -14,8 +14,8 @@ const SERVICES = [
 
 export default function WakeUpServices() {
     useEffect(() => {
-        // Only run in production
-        if (process.env.NODE_ENV !== 'production') return;
+        // Only run in production and NEVER on localhost
+        if (process.env.NODE_ENV !== 'production' || (typeof window !== 'undefined' && window.location.hostname === 'localhost')) return;
 
         console.log("🚀 Pinging services to wake them up...");
 

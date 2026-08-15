@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useUser } from '@clerk/nextjs';
+import VerifiedGate from '../../../components/VerifiedGate';
 
 export default function ChatPage({ params }: { params: { id: string } }) {
   const { user: clerkUser } = useUser();
@@ -177,13 +178,15 @@ export default function ChatPage({ params }: { params: { id: string } }) {
             placeholder="Type a message..."
             className="flex-1 bg-gray-900 border border-gray-800 rounded-full px-4 py-3 text-sm focus:outline-none focus:border-blue-500 transition-colors"
           />
-          <button
-            onClick={handleSend}
-            disabled={sending || !inputText.trim()}
-            className="bg-blue-600 hover:bg-blue-500 disabled:bg-gray-800 disabled:text-gray-600 text-white rounded-full px-6 py-3 font-bold text-sm transition-colors active:scale-95"
-          >
-            {sending ? '...' : 'Send'}
-          </button>
+          <VerifiedGate actionLabel="Sending a message">
+            <button
+              onClick={handleSend}
+              disabled={sending || !inputText.trim()}
+              className="bg-blue-600 hover:bg-blue-500 disabled:bg-gray-800 disabled:text-gray-600 text-white rounded-full px-6 py-3 font-bold text-sm transition-colors active:scale-95"
+            >
+              {sending ? '...' : 'Send'}
+            </button>
+          </VerifiedGate>
         </div>
       </div>
     </div>

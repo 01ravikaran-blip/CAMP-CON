@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingBag, Book, Laptop, Bike, Home, Wrench, Search, Plus, QrCode, ArrowRight, X } from 'lucide-react';
 import { useToast } from '../../components/Toast';
+import VerifiedGate from '../../components/VerifiedGate';
 
 const CATEGORIES = [
   { id: 'All', icon: ShoppingBag },
@@ -179,10 +180,12 @@ export default function MarketplacePage() {
                     <span>₹{selectedListing.priceINR}</span>
                   </button>
                   
-                  <button onClick={handleEscrowPoints} className="w-full p-4 rounded-2xl bg-blue-500 hover:bg-blue-600 text-white font-bold flex justify-between items-center transition-colors">
-                    <span className="flex items-center gap-2">⚡ Pay via In-App Escrow</span>
-                    <span>{selectedListing.pricePoints} pts</span>
-                  </button>
+                  <VerifiedGate actionLabel="Releasing Escrow">
+                    <button onClick={handleEscrowPoints} className="w-full p-4 rounded-2xl bg-blue-500 hover:bg-blue-600 text-white font-bold flex justify-between items-center transition-colors">
+                      <span className="flex items-center gap-2">⚡ Pay via In-App Escrow</span>
+                      <span>{selectedListing.pricePoints} pts</span>
+                    </button>
+                  </VerifiedGate>
                 </div>
                 
                 <p className="text-xs text-gray-400 text-center mt-4">
