@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
 
     // Process all expirations in a transaction
     await prisma.$transaction(
-      expiredRequests.map((req) => {
+      expiredRequests.map((req: any) => {
         const refundAmount = Math.floor(req.energySpent * 0.5); // 50% refund
 
         return prisma.user.update({
