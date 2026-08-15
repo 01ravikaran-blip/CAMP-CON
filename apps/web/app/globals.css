@@ -1,0 +1,226 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Default (Light) - X Style */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f7f9f9;
+  --bg-tertiary: #eff3f4;
+
+  --text-primary: #0f1419;
+  --text-secondary: #536471;
+
+  --accent: #1d9bf0;
+  --accent-hover: #1a8cd8;
+
+  --like-color: #f91880;
+  --repost-color: #00ba7c;
+
+  --border-color: #eff3f4;
+
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+}
+
+[data-theme='dark'] {
+  /* Dark / Void Theme */
+  --bg-primary: #000000;
+  --bg-secondary: #16181c;
+  --bg-tertiary: #202327;
+
+  --text-primary: #e7e9ea;
+  --text-secondary: #71767b;
+
+  --accent: #1d9bf0;
+  --accent-hover: #1a8cd8;
+
+  --border-color: #2f3336;
+}
+
+[data-theme='reading'] {
+  /* Warm / Sepia Theme */
+  --bg-primary: #FDF6E3;
+  --bg-secondary: #EEE8D5;
+  --bg-tertiary: #E0DBC6;
+
+  --text-primary: #433422;
+  --text-secondary: #8c7355;
+
+  --accent: #D33682;
+  /* Solarized Magenta/Pink */
+  --border-color: #D3CBB7;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  transition: background-color 0.2s ease, color 0.2s ease;
+  overflow-x: hidden;
+}
+
+/* Glass Utility Refined - Apple/Mac Style */
+.glass {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+}
+
+.glass-premium {
+  background: rgba(var(--bg-primary-rgb, 255, 255, 255), 0.7);
+  backdrop-filter: blur(25px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+}
+
+[data-theme='dark'] .glass-premium {
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Apple-style Page Transitions */
+.page-transition-enter {
+  animation: apple-blend-in 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes apple-blend-in {
+  from {
+    opacity: 0;
+    transform: scale(0.99) translateY(4px);
+    filter: blur(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+  }
+}
+
+/* iOS Spinner Animation */
+@keyframes ios-spinner {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.15;
+  }
+}
+
+.ios-loading-dot {
+  animation: ios-spinner 1s linear infinite;
+}
+
+/* Top Progress Bar Gradient */
+@keyframes progress-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.loading-bar-active {
+  background: linear-gradient(90deg, #1d9bf0, #00ba7c, #1d9bf0);
+  background-size: 200% 100%;
+  animation: progress-shimmer 2s infinite linear;
+}
+
+/* Skeleton Shimmer */
+@keyframes skeleton-pulse {
+  0% {
+    background-color: var(--bg-tertiary);
+    opacity: 0.5;
+  }
+
+  50% {
+    background-color: var(--bg-tertiary);
+    opacity: 1;
+  }
+
+  100% {
+    background-color: var(--bg-tertiary);
+    opacity: 0.5;
+  }
+}
+
+.skeleton {
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+  border-radius: var(--radius-md);
+}
+
+/* Premium Buttons - Apple/X Style */
+.btn-premium {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-premium::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: white;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.btn-premium:active::after {
+  opacity: 0.1;
+}
+
+/* Typography Utilities */
+.title-apple {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+}
+
+/* Animations */
+@keyframes like-bounce {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.3);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-like-bounce {
+  animation: like-bounce 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Scrollbar Hide */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+}

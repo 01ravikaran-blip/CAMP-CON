@@ -1,0 +1,100 @@
+services:
+  # 1. Auth Service
+  - type: web
+    name: camp-con-auth
+    env: node
+    plan: free
+    rootDir: backend/auth-service
+    buildCommand: npm install
+    startCommand: node index.js
+    envVars:
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+
+  # 2. Social Graph Service
+  - type: web
+    name: camp-con-social
+    env: node
+    plan: free
+    rootDir: backend/social-graph-service
+    buildCommand: npm install
+    startCommand: node index.js
+    envVars:
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+
+  # 3. Verification Service
+  - type: web
+    name: camp-con-verification
+    env: node
+    plan: free
+    rootDir: backend/verification-service
+    buildCommand: npm install
+    startCommand: node index.js
+    envVars:
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+
+  # 4. Marketplace Service
+  - type: web
+    name: camp-con-marketplace
+    env: node
+    plan: free
+    rootDir: backend/marketplace-service
+    buildCommand: npm install
+    startCommand: node index.js
+    envVars:
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+
+  # 5. Events Service
+  - type: web
+    name: camp-con-events
+    env: node
+    plan: free
+    rootDir: backend/events-service
+    buildCommand: npm install
+    startCommand: node index.js
+    envVars:
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+
+  # 6. Chat Service
+  - type: web
+    name: camp-con-chat
+    env: node
+    plan: free
+    rootDir: backend/chat-service
+    buildCommand: npm install
+    startCommand: node index.js
+    envVars:
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+
+  # 7. Wallet Service
+  - type: web
+    name: camp-con-wallet
+    env: node
+    plan: free
+    rootDir: backend/wallet-service
+    buildCommand: npm install
+    startCommand: node index.js
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false

@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: camp-con-verification-service
+    env: node
+    rootDir: backend/verification-service
+    plan: starter
+    buildCommand: npm install
+    startCommand: node index.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: ALLOWED_ORIGINS
+        sync: false

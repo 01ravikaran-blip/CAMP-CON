@@ -1,0 +1,19 @@
+{
+    "name": "social-graph-service",
+    "version": "1.0.0",
+    "description": "Manages Connections, Groups, and Privacy Graphs",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js"
+    },
+    "dependencies": {
+        "cors": "^2.8.5",
+        "dotenv": "^17.2.3",
+        "express": "^4.18.2",
+        "mongoose": "^9.1.3",
+        "multer": "^2.0.2",
+        "neo4j-driver": "^5.12.0",
+        "sqlite": "^5.1.1",
+        "sqlite3": "^5.1.7"
+    }
+}
