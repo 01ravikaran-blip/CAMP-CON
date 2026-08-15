@@ -10,7 +10,14 @@ export const metadata: Metadata = {
   description: 'The ultimate student companion',
 };
 
-import { ClerkProvider } from '@clerk/nextjs';
+import {
+  ClerkProvider,
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  SignUpButton,
+  UserButton,
+} from '@clerk/nextjs';
 import { ThemeProvider } from '../context/ThemeContext';
 
 import WakeUpServices from '../components/WakeUpServices';
