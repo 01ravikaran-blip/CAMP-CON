@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 import prisma from '@/utils/prisma';
+import { Prisma } from '@prisma/client';
 
 export async function POST(req: NextRequest) {
   try {
@@ -20,7 +21,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Run calculations inside transaction to ensure atomic updates
-    return await prisma.$transaction(async (tx: any) => {
+    return await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       const requester = await tx.user.findUnique({ where: { id: userId } });
       const targetUser = await tx.user.findUnique({ where: { id: targetUserId } });
       const existingRequest = await tx.connectionRequest.findFirst({

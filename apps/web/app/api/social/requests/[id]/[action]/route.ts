@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 import prisma from '@/utils/prisma';
+import { Prisma } from '@prisma/client';
 
 export async function POST(
   req: NextRequest,
@@ -14,7 +15,7 @@ export async function POST(
 
     const { id, action } = await params;
     
-    return await prisma.$transaction(async (tx: any) => {
+    return await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       const connection = await tx.connectionRequest.findUnique({
         where: { id }
       });

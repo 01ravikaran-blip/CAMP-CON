@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
     // Reset freeMessageCount to 1 and update lastEnergyRefill to now
     const result = await prisma.user.updateMany({
       where: {
-        id: { in: usersToReset.map(u => u.id) }
+        id: { in: usersToReset.map((u: { id: string }) => u.id) }
       },
       data: {
         freeMessageCount: 1,

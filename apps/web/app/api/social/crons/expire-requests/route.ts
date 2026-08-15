@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/utils/prisma';
+import { ConnectionRequest } from '@prisma/client';
 
 export async function GET(req: NextRequest) {
   // In a real production setup, we would secure this route with a CRON secret:
@@ -24,7 +25,7 @@ export async function GET(req: NextRequest) {
 
     // Process all expirations in a transaction
     await prisma.$transaction(
-      expiredRequests.map((req: any) => {
+      expiredRequests.map((req: ConnectionRequest) => {
         const refundAmount = Math.floor(req.energySpent * 0.5); // 50% refund
 
         return prisma.user.update({
