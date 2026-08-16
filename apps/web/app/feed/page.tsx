@@ -86,6 +86,54 @@ export default function FeedPage() {
         }
     }, [isLoaded, clerkUser]);
 
+    const getStarterPosts = () => [
+        {
+            _id: 'mock1',
+            username: 'System',
+            content: '👋 Welcome to CAMP-CON! Introduce yourself to the campus.',
+            media: [],
+            created_at: new Date().toISOString(),
+            upvotes: [],
+            downvotes: [],
+            comments: [],
+            shares: 0,
+            views: 1,
+            is_anonymous: false,
+            location: null,
+            tags: 'intro'
+        },
+        {
+            _id: 'mock2',
+            username: 'System',
+            content: 'Campus Announcements will appear here.',
+            media: [],
+            created_at: new Date(Date.now() - 3600000).toISOString(),
+            upvotes: [],
+            downvotes: [],
+            comments: [],
+            shares: 0,
+            views: 1,
+            is_anonymous: false,
+            location: null,
+            tags: 'announcement'
+        },
+        {
+            _id: 'mock3',
+            username: 'System',
+            content: 'Lost something? Post it here.',
+            media: [],
+            created_at: new Date(Date.now() - 7200000).toISOString(),
+            upvotes: [],
+            downvotes: [],
+            comments: [],
+            shares: 0,
+            views: 1,
+            is_anonymous: false,
+            location: null,
+            tags: 'lost_and_found'
+        }
+    ];
+
     const fetchPosts = async () => {
         try {
             const SOCIAL_URL = process.env.NODE_ENV === 'production'
@@ -101,42 +149,15 @@ export default function FeedPage() {
             const res = await fetch(url);
             const data = await res.json();
             if (Array.isArray(data)) {
-                setPosts(data);
+                if (data.length === 0) {
+                    setPosts(getStarterPosts());
+                } else {
+                    setPosts(data);
+                }
             }
         } catch (error) {
             console.log("Social service offline. Loading mock feed...");
-            setPosts([
-                {
-                    _id: 'mock1',
-                    username: 'Sarah (Design)',
-                    content: 'Just finished my final project! Anyone want to grab coffee at the campus cafe? ☕️✨',
-                    media: [],
-                    created_at: new Date(Date.now() - 1000 * 60 * 30).toISOString(),
-                    upvotes: ['1', '2', '3', '4', '5'],
-                    downvotes: [],
-                    comments: [{ username: 'Alex', text: 'I am down! See you in 10.' }],
-                    shares: 2,
-                    views: 120,
-                    is_anonymous: false,
-                    location: { name: 'Campus Cafe' },
-                    tags: 'social'
-                },
-                {
-                    _id: 'mock2',
-                    username: 'Anonymous',
-                    content: 'Did anyone else find that OS midterm ridiculously hard? 😭',
-                    media: [],
-                    created_at: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
-                    upvotes: Array(45).fill('a'),
-                    downvotes: [],
-                    comments: [{ username: 'Anonymous', text: 'I guessed on half of them.' }],
-                    shares: 5,
-                    views: 400,
-                    is_anonymous: true,
-                    location: { name: 'Library' },
-                    tags: 'academics'
-                }
-            ]);
+            setPosts(getStarterPosts());
         }
     };
 
@@ -296,7 +317,12 @@ export default function FeedPage() {
     const startRecording = async () => {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            const recorder = new MediaRecorder(stream);
+            const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
+              ? 'audio/webm;codecs=opus'
+              : MediaRecorder.isTypeSupported('audio/mp4')
+              ? 'audio/mp4'
+              : 'audio/webm';
+            const recorder = new MediaRecorder(stream, { mimeType });
             chunksRef.current = [];
 
             recorder.ondataavailable = e => {
@@ -304,7 +330,10 @@ export default function FeedPage() {
             };
 
             recorder.onstop = async () => {
-                const blob = new Blob(chunksRef.current, { type: 'audio/webm' });
+                const blob = new Blob(chunksRef.current, { type: mimeType });
+                
+                // Construct playable URL directly for immediate playback (Safari fixes)
+                const url = URL.createObjectURL(blob);
 
                 // Base64 Persistence for Voice Notes
                 try {

@@ -50,7 +50,7 @@ export default function DevHUD() {
     return (
       <button 
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-4 right-4 z-50 bg-black/80 backdrop-blur-md border border-white/20 text-white p-3 rounded-full shadow-2xl hover:scale-110 transition-transform flex items-center justify-center group"
+        className="fixed top-20 right-4 z-40 bg-black/80 backdrop-blur-md border border-white/20 text-white p-3 rounded-full shadow-2xl hover:scale-110 transition-transform flex items-center justify-center group"
       >
         <span className="text-xl">🛠️</span>
       </button>
@@ -58,7 +58,7 @@ export default function DevHUD() {
   }
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 w-72 glass glass-card p-4 rounded-3xl shadow-2xl animate-enter border border-blue-500/30">
+    <div className="fixed top-20 right-4 z-40 w-72 glass glass-card p-4 rounded-3xl shadow-2xl animate-enter border border-blue-500/30">
       <div className="flex justify-between items-center mb-4">
         <h3 className="font-black text-sm tracking-widest text-blue-400">DEV HUD</h3>
         <button onClick={() => setIsOpen(false)} className="text-white/50 hover:text-white">✕</button>

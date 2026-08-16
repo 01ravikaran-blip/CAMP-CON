@@ -13,7 +13,7 @@ export default function MapClient({ posts }: { posts: any[] }) {
     const { user: clerkUser } = useUser();
     const { theme } = useTheme();
     const mapRef = useRef<MapRef>(null);
-    const [center, setCenter] = useState<[number, number]>([30.767, 76.649]);
+    const [center, setCenter] = useState<[number, number]>([76.5754, 30.7688]); // Chandigarh University fallback
     const [nearbyUsers, setNearbyUsers] = useState<any[]>([]);
     const [isFindable, setIsFindable] = useState(false);
     const [modalState, setModalState] = useState<{isOpen: boolean, targetUser: string, targetId: string}>({ isOpen: false, targetUser: '', targetId: '' });
@@ -218,12 +218,13 @@ export default function MapClient({ posts }: { posts: any[] }) {
                     <button 
                         onClick={async () => {
                             const newValue = !isFindable;
-                            await fetch('/api/user/update-metadata', {
-                                method: 'POST',
+                            // Optimistic update
+                            setIsFindable(newValue);
+                            await fetch('/api/user/status', {
+                                method: 'PATCH',
                                 headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ metadata: { isFindable: newValue } })
+                                body: JSON.stringify({ ghostMode: !newValue })
                             });
-                            window.location.reload();
                         }}
                         className={`w-10 h-5 rounded-full relative transition-colors ${isFindable ? 'bg-green-500' : 'bg-white/30'}`}
                     >
@@ -237,7 +238,7 @@ export default function MapClient({ posts }: { posts: any[] }) {
                         onClick={() => setLayersVisible(s => ({ ...s, buildings: !s.buildings }))}
                         className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition-all shadow-md backdrop-blur-md border ${
                             layersVisible.buildings 
-                            ? 'bg-blue-500/80 text-white border-blue-400/50' 
+                            ? 'bg-emerald-950/40 text-emerald-300 border-emerald-400' 
                             : 'bg-white/10 text-white/70 border-white/20'
                         }`}
                     >
@@ -247,7 +248,7 @@ export default function MapClient({ posts }: { posts: any[] }) {
                         onClick={() => setLayersVisible(s => ({ ...s, cafes: !s.cafes }))}
                         className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition-all shadow-md backdrop-blur-md border ${
                             layersVisible.cafes 
-                            ? 'bg-amber-500/80 text-white border-amber-400/50' 
+                            ? 'bg-emerald-950/40 text-emerald-300 border-emerald-400' 
                             : 'bg-white/10 text-white/70 border-white/20'
                         }`}
                     >
@@ -257,7 +258,7 @@ export default function MapClient({ posts }: { posts: any[] }) {
                         onClick={() => setLayersVisible(s => ({ ...s, hostels: !s.hostels }))}
                         className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition-all shadow-md backdrop-blur-md border ${
                             layersVisible.hostels 
-                            ? 'bg-teal-500/80 text-white border-teal-400/50' 
+                            ? 'bg-emerald-950/40 text-emerald-300 border-emerald-400' 
                             : 'bg-white/10 text-white/70 border-white/20'
                         }`}
                     >
@@ -292,7 +293,7 @@ export default function MapClient({ posts }: { posts: any[] }) {
                     pitch: 50,
                     bearing: -20
                 }}
-                mapStyle={theme === 'dark' ? 'https://tiles.openfreemap.org/styles/dark' : 'https://tiles.openfreemap.org/styles/liberty'}
+                mapStyle={theme === 'dark' ? 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json' : 'https://tiles.openfreemap.org/styles/liberty'}
                 interactiveLayerIds={['students-layer']}
                 onClick={handleMapClick}
                 style={{ 

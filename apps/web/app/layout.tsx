@@ -17,6 +17,7 @@ import {
   SignUpButton,
   UserButton,
 } from '@clerk/nextjs';
+import { dark } from '@clerk/themes';
 import { ThemeProvider } from '../context/ThemeContext';
 import { TenantProvider } from '../context/TenantContext';
 
@@ -38,7 +39,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="antialiased min-h-screen pb-16 md:pb-0">
-        <ClerkProvider telemetry={false}>
+        {/* @ts-ignore - Clerk Appearance Type mismatch */}
+        <ClerkProvider telemetry={false} appearance={{ baseTheme: dark }}>
           <ThemeProvider>
             <TenantProvider>
               <WakeUpServices />

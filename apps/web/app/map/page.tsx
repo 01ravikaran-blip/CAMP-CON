@@ -32,7 +32,7 @@ export default function MapPage() {
     }, []);
 
     return (
-        <div className="h-screen w-full relative">
+        <div className="w-full h-full min-h-[calc(100vh-4rem)] relative">
             <div className="absolute top-0 left-0 w-full z-[1000] p-4 pointer-events-none">
                 <div className="bg-white/90 dark:bg-black/90 p-2 rounded-xl shadow-lg inline-block pointer-events-auto">
                     <h1 className="text-sm font-bold">📍 Campus Map</h1>

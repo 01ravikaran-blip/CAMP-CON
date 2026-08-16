@@ -26,18 +26,18 @@
 }
 
 [data-theme='dark'] {
-  /* Dark / Void Theme */
-  --bg-primary: #000000;
-  --bg-secondary: #16181c;
-  --bg-tertiary: #202327;
+  /* Dark / Void Theme (Slate High Contrast) */
+  --bg-primary: #020617; /* slate-950 */
+  --bg-secondary: #0f172a; /* slate-900 */
+  --bg-tertiary: #1e293b; /* slate-800 */
 
-  --text-primary: #e7e9ea;
-  --text-secondary: #71767b;
+  --text-primary: #f1f5f9; /* slate-100 */
+  --text-secondary: #94a3b8; /* slate-400 */
 
-  --accent: #1d9bf0;
-  --accent-hover: #1a8cd8;
+  --accent: #3b82f6; /* blue-500 */
+  --accent-hover: #2563eb; /* blue-600 */
 
-  --border-color: #2f3336;
+  --border-color: #1e293b; /* slate-800 */
 }
 
 [data-theme='reading'] {
