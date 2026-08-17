@@ -82,6 +82,7 @@ We will deploy the `social-graph-service` (and others) to Render because it hand
     *   **Environment Variables**:
         *   To make the frontend talk to your *new* live backend (not localhost):
         *   Create variables in your frontend code (e.g., `NEXT_PUBLIC_API_URL`) and set them here to your Render Backend URL.
+        *   Set `NEXT_PUBLIC_GEOAPIFY_API_KEY` for Geoapify map styles + reverse geocoding.
         *   *Note: If your code currently hardcodes `http://localhost:3003`, you will need to find/replace that with your Render URL before pushing, OR better yet, use an environment variable.*
 
 5.  Click **Deploy**.
@@ -97,6 +98,7 @@ Your code currently points to `http://localhost:3003` and `3006`.
 1.  **In `apps/web/next.config.js`** (or just use `process.env.NEXT_PUBLIC_API_URL` in code):
     *   Replace `http://localhost:3003` with `process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3003'` in your `fetch` calls.
 2.  **In Vercel**, set `NEXT_PUBLIC_API_URL` to your Render Backend URL (e.g., `https://smart-campus-backend.onrender.com`).
+3.  **In Vercel**, set `NEXT_PUBLIC_GEOAPIFY_API_KEY` to enable Geoapify-powered map styling and place name lookup.
 
 ---
 

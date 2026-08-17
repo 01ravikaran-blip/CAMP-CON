@@ -32,6 +32,14 @@ export default function MapClient({ posts }: { posts: any[] }) {
     const SOCIAL_URL = process.env.NODE_ENV === 'production'
         ? 'https://camp-con-social.onrender.com'
         : 'http://localhost:3003';
+    const GEOAPIFY_KEY = process.env.NEXT_PUBLIC_GEOAPIFY_API_KEY;
+    const mapStyleUrl = GEOAPIFY_KEY
+        ? (theme === 'dark'
+            ? `https://maps.geoapify.com/v1/styles/dark-matter-brown/style.json?apiKey=${GEOAPIFY_KEY}`
+            : `https://maps.geoapify.com/v1/styles/osm-bright/style.json?apiKey=${GEOAPIFY_KEY}`)
+        : (theme === 'dark'
+            ? 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json'
+            : 'https://tiles.openfreemap.org/styles/liberty');
 
     // 1. Get location & Update backend
     useEffect(() => {
@@ -293,7 +301,7 @@ export default function MapClient({ posts }: { posts: any[] }) {
                     pitch: 50,
                     bearing: -20
                 }}
-                mapStyle={theme === 'dark' ? 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json' : 'https://tiles.openfreemap.org/styles/liberty'}
+                mapStyle={mapStyleUrl}
                 interactiveLayerIds={['students-layer']}
                 onClick={handleMapClick}
                 style={{ 

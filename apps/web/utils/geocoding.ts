@@ -1,6 +1,26 @@
 export const getPlaceName = async (lat: number, lng: number): Promise<string> => {
+    const geoapifyKey = process.env.NEXT_PUBLIC_GEOAPIFY_API_KEY;
+
     try {
-        // Use OpenStreetMap Nominatim API (Free, requires User-Agent)
+        if (geoapifyKey) {
+            const geoapifyRes = await fetch(`https://api.geoapify.com/v1/geocode/reverse?lat=${lat}&lon=${lng}&apiKey=${geoapifyKey}`);
+            if (geoapifyRes.ok) {
+                const geoapifyData = await geoapifyRes.json();
+                const feature = geoapifyData?.features?.[0];
+                const props = feature?.properties;
+
+                if (props) {
+                    const name = props.address_line1 || props.name || props.street;
+                    const area = props.suburb || props.neighbourhood || props.city || props.town || props.state;
+
+                    if (name && area) return `📍 ${name}, ${area}`;
+                    if (name) return `📍 ${name}`;
+                    if (area) return `📍 ${area}`;
+                }
+            }
+        }
+
+        // Fallback to OpenStreetMap Nominatim
         const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`, {
             headers: {
                 'User-Agent': 'SmartCampusApp/1.0'
